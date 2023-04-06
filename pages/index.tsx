@@ -1,44 +1,92 @@
-import { FC } from 'react'
+import { FC, useEffect, useState } from 'react'
 
 import Tile from '../components/Tile'
 
-const board = [
-  ['A', 'B', 'C', 'D', 'E'],
-  ['A', 'B', 'C', 'D', 'E'],
-  ['A', 'B', 'C', 'D', 'E'],
-  ['A', 'B', 'C', 'D', 'E'],
-  ['A', 'B', 'C', 'D', 'E']
+interface TileData {
+  letter: string
+  score: number
+}
+
+const tiles = [
+  { letter: 'A', score: 1 },
+  { letter: 'B', score: 3 },
+  { letter: 'C', score: 3 },
+  { letter: 'D', score: 2 },
+  { letter: 'E', score: 1 },
+  { letter: 'F', score: 4 },
+  { letter: 'G', score: 2 },
+  { letter: 'H', score: 4 },
+  { letter: 'I', score: 1 },
+  { letter: 'J', score: 8 },
+  { letter: 'K', score: 5 },
+  { letter: 'L', score: 1 },
+  { letter: 'M', score: 3 },
+  { letter: 'N', score: 1 },
+  { letter: 'O', score: 1 },
+  { letter: 'P', score: 3 },
+  { letter: 'Q', score: 10 },
+  { letter: 'R', score: 1 },
+  { letter: 'S', score: 1 },
+  { letter: 'T', score: 1 },
+  { letter: 'U', score: 1 },
+  { letter: 'V', score: 4 },
+  { letter: 'W', score: 4 },
+  { letter: 'X', score: 8 },
+  { letter: 'Y', score: 4 },
+  { letter: 'Z', score: 10 }
 ]
 
-const App: FC = () => (
-  <div
-    style={{
-      display: 'flex',
-      flexDirection: 'column',
-      gap: '16px',
-      border: '1px solid black',
-      padding: '16px'
-    }}
-  >
-    {
-      board.map((row, index) => (
-        <div
-          key={index}
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            gap: '16px'
-          }}
-        >
-          {
-            row.map((letter, index) => (
-              <Tile key={index} letter={letter} score={1} />
-            ))
-          }
-        </div>
-      ))
+const generateBoard = (): TileData[][] => {
+  const board = [] as TileData[][]
+
+  for (let r = 0; r < 5; r++) {
+    board[r] = [] as TileData[]
+
+    for (let c = 0; c < 5; c++) {
+      board[r][c] = tiles[Math.floor((Math.random() * (tiles.length - 1)))]
     }
-  </div>
-)
+  }
+
+  return board
+}
+
+const App: FC = () => {
+  const [board, setBoard] = useState<TileData[][]>([])
+
+  useEffect(() => {
+    setBoard(generateBoard())
+  }, [])
+
+  return (
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '16px',
+        border: '1px solid black',
+        padding: '16px'
+      }}
+    >
+      {
+        board.map((row, index) => (
+          <div
+            key={index}
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              gap: '16px'
+            }}
+          >
+            {
+              row.map((data, index) => (
+                <Tile key={index} {...data} />
+              ))
+            }
+          </div>
+        ))
+      }
+    </div>
+  )
+}
 
 export default App
