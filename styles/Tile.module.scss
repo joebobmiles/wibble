@@ -1,0 +1,25 @@
+.tile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  font-size: 32px;
+  border: 1px solid black;
+
+  position: relative;
+}
+
+.tileScore {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+
+  position: absolute;
+  right: 0px;
+  bottom: 0px;
+
+  font-size: 8px;
+}
