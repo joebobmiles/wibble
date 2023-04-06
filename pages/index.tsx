@@ -2,6 +2,14 @@ import { FC } from 'react'
 
 import Tile from '../components/Tile'
 
+const board = [
+  ['A', 'B', 'C', 'D', 'E'],
+  ['A', 'B', 'C', 'D', 'E'],
+  ['A', 'B', 'C', 'D', 'E'],
+  ['A', 'B', 'C', 'D', 'E'],
+  ['A', 'B', 'C', 'D', 'E']
+]
+
 const App: FC = () => (
   <div
     style={{
@@ -12,16 +20,24 @@ const App: FC = () => (
       padding: '16px'
     }}
   >
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'row',
-        gap: '16px'
-      }}
-    >
-      <Tile letter='A' score={1} />
-      <Tile letter='B' score={2} />
-    </div>
+    {
+      board.map((row, index) => (
+        <div
+          key={index}
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            gap: '16px'
+          }}
+        >
+          {
+            row.map((letter, index) => (
+              <Tile key={index} letter={letter} score={1} />
+            ))
+          }
+        </div>
+      ))
+    }
   </div>
 )
 
