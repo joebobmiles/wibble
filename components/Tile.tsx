@@ -1,6 +1,6 @@
 import { FC } from 'react'
 
-import style from '../styles/Tile.module.scss'
+import style from './Tile.module.scss'
 
 const Tile: FC<{ letter: string, score: number }> = ({ letter, score }) => (
   <div className={style.tile}>
