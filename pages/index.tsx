@@ -1,13 +1,13 @@
 import { FC } from 'react'
-import { createMachine } from 'xstate'
+import { createMachine, assign } from 'xstate'
+import { useMachine } from '@xstate/react'
 
-import { generateTitleBoard } from '@/utils/board'
+import { generateTitleBoard, generateRandomBoard } from '@/utils/board'
 import { TileData } from '@/types'
 
 import Tile from '@/components/Tile'
 
 import styles from './index.module.scss'
-import { useMachine } from '@xstate/react'
 
 interface GameData {
   board: TileData[][]
@@ -16,28 +16,52 @@ interface GameData {
 
 const machine = createMachine(
   {
-    initial: 'setup',
+    initial: 'title',
     states: {
-      setup: {}
+      title: {
+        entry: 'setupTitle',
+        on: {
+          START_GAME: {
+            target: 'play'
+          }
+        }
+      },
+      play: {
+        entry: 'setupGame'
+      }
     },
     context: {
-      currentWord: 'WIBLE',
-      board: generateTitleBoard()
+      currentWord: '',
+      board: []
     },
     /* eslint-disable @typescript-eslint/consistent-type-assertions */
     schema: {
       context: {} as GameData
     }
     /* eslint-enable @typescript-eslint/consistent-type-assertions */
+  },
+  {
+    actions: {
+      setupTitle: assign({
+        currentWord: (_) => '',
+        board: (_) => generateTitleBoard()
+      }),
+      setupGame: assign({
+        board: (_) => generateRandomBoard()
+      })
+    }
   }
 )
 
 const App: FC = () => {
-  const [{ context: { currentWord, board } }] = useMachine(machine)
+  const [
+    state,
+    send
+  ] = useMachine(machine)
 
   return (
     <main className={styles.container}>
-      <div>{currentWord}</div>
+      <div>{state.context.currentWord}</div>
       <div
         style={{
           display: 'flex',
@@ -50,7 +74,7 @@ const App: FC = () => {
         }}
       >
         {
-          board.map((row, rowIndex) => (
+          state.context.board.map((row, rowIndex) => (
             <div
               key={rowIndex}
               style={{
@@ -71,6 +95,11 @@ const App: FC = () => {
           ))
         }
       </div>
+      {
+        state.matches('title')
+          ? <button onClick={() => send('START_GAME')}>Play</button>
+          : null
+      }
     </main>
   )
 }
