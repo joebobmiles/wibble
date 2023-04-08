@@ -25,7 +25,9 @@ export default createMachine(
     },
     /* eslint-disable @typescript-eslint/consistent-type-assertions */
     schema: {
-      context: {} as GameData
+      context: {} as GameData,
+      events: {} as
+        | { type: 'START_GAME' }
     }
     /* eslint-enable @typescript-eslint/consistent-type-assertions */
   },
