@@ -29,7 +29,7 @@ export const tiles = [
   { letter: 'Z', score: 10 }
 ]
 
-export const generateBoard = (): TileData[][] => {
+export const generateRandomBoard = (): TileData[][] => {
   const board = [] as TileData[][]
 
   for (let r = 0; r < 5; r++) {
@@ -38,6 +38,22 @@ export const generateBoard = (): TileData[][] => {
     for (let c = 0; c < 5; c++) {
       board[r][c] = tiles[Math.floor((Math.random() * (tiles.length - 1)))]
     }
+  }
+
+  return board
+}
+
+export const generateTitleBoard = (): TileData[][] => {
+  const board = [] as TileData[][]
+
+  for (let r = 0; r < 5; r++) {
+    board[r] = [
+      tiles[22], // W
+      tiles[8], // I
+      tiles[1], // B
+      tiles[11], // L
+      tiles[4] // E
+    ] as TileData[]
   }
 
   return board
