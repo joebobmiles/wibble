@@ -1,4 +1,4 @@
-import { FC, useContext, useState, useEffect, useCallback } from 'react'
+import { FC, useContext, useCallback } from 'react'
 import { useSelector } from '@xstate/react'
 
 import { TileData } from '@/types'
@@ -12,29 +12,36 @@ interface TypeProps extends TileData {
 
 const Tile: FC<TypeProps> = ({ letter, score, location }) => {
   const actor = useContext(GameStateMachineContext)
-  const isChaining = useSelector(actor, (state) => state.matches('play.chaining'))
-
-  const [isSelected, setSelected] = useState(false)
-
-  useEffect(() => {
-    if (!isChaining) {
-      setSelected(false)
-    }
-  }, [isChaining])
+  const {
+    isChaining,
+    tailOfChain,
+    isSelected
+  } = useSelector(actor, (state) => ({
+    isChaining: state.matches('play.chaining'),
+    tailOfChain: state.context.currentChain.slice(-2),
+    isSelected: state.context.currentChain.find((l) => l.toString() === location.toString())
+  }))
 
   const addLetter = useCallback(() => {
     actor.send({ type: 'ADD_LETTER', location })
-    setSelected(true)
   }, [actor, location])
+
+  const removeLetter = useCallback(() => {
+    if (tailOfChain[0].toString() === location.toString()) {
+      actor.send('REMOVE_LETTER')
+    }
+  }, [actor, location, tailOfChain])
 
   return (
     <div
-      className={isSelected ? style.tileSelected : style.tile}
+      className={(isSelected != null) ? style.tileSelected : style.tile}
       {
         ...(
           !isChaining
             ? { onPointerDown: addLetter }
-            : { onPointerEnter: addLetter }
+            : (
+                { onPointerEnter: ((isSelected != null) ? removeLetter : addLetter) }
+              )
         )
       }
     >

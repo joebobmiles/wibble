@@ -4,6 +4,11 @@ import { createMachine, assign, ActorRefFrom } from 'xstate'
 import { generateTitleBoard, generateRandomBoard } from '@/utils/board'
 import { GameData } from '@/types'
 
+const addLetterActions = [
+  'addLetter',
+  'updateCurrentWord'
+]
+
 export const gameStateMachine = createMachine(
   {
     initial: 'title',
@@ -16,26 +21,37 @@ export const gameStateMachine = createMachine(
       },
       play: {
         entry: 'setupGame',
-        on: {
-          ADD_LETTER: {
-            actions: 'addLetter'
-          }
-        },
         initial: 'idle',
         states: {
           idle: {
+            entry: 'cleanupChain',
             on: {
               ADD_LETTER: {
                 target: 'chaining',
-                actions: 'addLetter'
+                actions: addLetterActions
               }
             }
           },
           chaining: {
             on: {
-              QUIT_CHAINING: 'idle'
-            },
-            exit: 'chainingCleanup'
+              ADD_LETTER: {
+                actions: addLetterActions
+              },
+              REMOVE_LETTER: {
+                actions: [
+                  'removeLetter',
+                  'updateCurrentWord'
+                ]
+              },
+              QUIT_CHAINING: [
+                { target: 'score', cond: 'chainMeetsMinimumLength' },
+                { target: 'idle' }
+              ]
+            }
+          },
+          score: {
+            always: 'idle',
+            exit: 'updateTotalScore'
           }
         }
       }
@@ -53,6 +69,7 @@ export const gameStateMachine = createMachine(
       events: {} as
         | { type: 'START_GAME' }
         | { type: 'ADD_LETTER', location: [number, number] }
+        | { type: 'REMOVE_LETTER' }
         | { type: 'QUIT_CHAINING' }
     }
     /* eslint-enable @typescript-eslint/consistent-type-assertions */
@@ -68,18 +85,33 @@ export const gameStateMachine = createMachine(
       }),
       addLetter: assign({
         currentChain: (context, { location }: { type: 'ADD_LETTER', location: [number, number] }) =>
-          context.currentChain.concat([location]),
-        currentWord: (context, { location: [col, row] }: { type: 'ADD_LETTER', location: [number, number] }) =>
-          context.currentWord + context.board[row][col].letter,
-        currentScore: (context, { location: [col, row] }: { type: 'ADD_LETTER', location: [number, number] }) =>
-          context.currentScore + context.board[row][col].score
+          context.currentChain.concat([location])
       }),
-      chainingCleanup: assign({
+      removeLetter: assign({
+        currentChain: (context) =>
+          context.currentChain.slice(0, -1)
+      }),
+      updateCurrentWord: assign({
+        currentWord: (context) => context.currentChain.reduce(
+          (word, [col, row]) => word + context.board[row][col].letter,
+          ''
+        ),
+        currentScore: (context) => context.currentChain.reduce(
+          (score, [col, row]) => score + context.board[row][col].score,
+          0
+        )
+      }),
+      updateTotalScore: assign({
+        totalScore: (context) => context.totalScore + context.currentScore
+      }),
+      cleanupChain: assign({
         currentChain: [],
         currentWord: '',
-        currentScore: 0,
-        totalScore: (context) => context.totalScore + context.currentScore
+        currentScore: 0
       })
+    },
+    guards: {
+      chainMeetsMinimumLength: (context) => context.currentChain.length > 1
     }
   }
 )
