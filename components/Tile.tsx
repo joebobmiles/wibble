@@ -29,13 +29,13 @@ const Tile: FC<TypeProps> = ({ letter, score }) => {
           !isChaining
             ? {
                 onPointerDown: () => {
-                  actor.send({ type: 'ADD_LETTER', letter })
+                  actor.send({ type: 'ADD_LETTER', letter, score })
                   setSelected(true)
                 }
               }
             : {
                 onPointerEnter: () => {
-                  actor.send({ type: 'ADD_LETTER', letter })
+                  actor.send({ type: 'ADD_LETTER', letter, score })
                   setSelected(true)
                 }
               }

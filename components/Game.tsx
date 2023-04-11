@@ -13,7 +13,14 @@ const Game: FC = () => {
 
   return (
     <main className={styles.container}>
-      <div>{state.context.currentWord}</div>
+      <div>
+        {state.context.currentWord}
+        {
+          state.context.currentScore > 0
+            ? ` +${state.context.currentScore}`
+            : null
+        }
+      </div>
       <div
         style={{
           display: 'flex',

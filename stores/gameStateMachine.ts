@@ -41,6 +41,7 @@ export const gameStateMachine = createMachine(
     },
     context: {
       currentWord: '',
+      currentScore: 0,
       board: []
     },
     /* eslint-disable @typescript-eslint/consistent-type-assertions */
@@ -48,7 +49,7 @@ export const gameStateMachine = createMachine(
       context: {} as GameData,
       events: {} as
         | { type: 'START_GAME' }
-        | { type: 'ADD_LETTER', letter: string }
+        | { type: 'ADD_LETTER', letter: string, score: number }
         | { type: 'QUIT_CHAINING' }
     }
     /* eslint-enable @typescript-eslint/consistent-type-assertions */
@@ -63,8 +64,10 @@ export const gameStateMachine = createMachine(
         board: (_) => generateRandomBoard()
       }),
       addLetter: assign({
-        currentWord: (context, event: { type: 'ADD_LETTER', letter: string }) =>
-          context.currentWord + event.letter
+        currentWord: (context, event: { type: 'ADD_LETTER', letter: string, score: number }) =>
+          context.currentWord + event.letter,
+        currentScore: (context, event: { type: 'ADD_LETTER', letter: string, score: number }) =>
+          context.currentScore + event.score
       })
     }
   }
