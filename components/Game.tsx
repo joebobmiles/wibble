@@ -70,7 +70,11 @@ const Game: FC = () => {
               Play
             </button>
             )
-          : null
+          : (
+            <span>
+              {state.context.totalScore}
+            </span>
+            )
       }
     </main>
   )

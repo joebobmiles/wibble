@@ -7,4 +7,5 @@ export interface GameData {
   board: TileData[][]
   currentWord: string
   currentScore: number
+  totalScore: number
 }

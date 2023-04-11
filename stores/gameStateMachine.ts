@@ -34,7 +34,8 @@ export const gameStateMachine = createMachine(
           chaining: {
             on: {
               QUIT_CHAINING: 'idle'
-            }
+            },
+            exit: 'chainingCleanup'
           }
         }
       }
@@ -42,6 +43,7 @@ export const gameStateMachine = createMachine(
     context: {
       currentWord: '',
       currentScore: 0,
+      totalScore: 0,
       board: []
     },
     /* eslint-disable @typescript-eslint/consistent-type-assertions */
@@ -68,6 +70,11 @@ export const gameStateMachine = createMachine(
           context.currentWord + event.letter,
         currentScore: (context, event: { type: 'ADD_LETTER', letter: string, score: number }) =>
           context.currentScore + event.score
+      }),
+      chainingCleanup: assign({
+        currentWord: '',
+        currentScore: 0,
+        totalScore: (context) => context.totalScore + context.currentScore
       })
     }
   }
