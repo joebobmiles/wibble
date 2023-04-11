@@ -13,7 +13,14 @@ const Game: FC = () => {
 
   return (
     <main className={styles.container}>
-      <div>{state.context.currentWord}</div>
+      <div>
+        {state.context.currentWord}
+        {
+          state.context.currentScore > 0
+            ? ` +${state.context.currentScore}`
+            : null
+        }
+      </div>
       <div
         style={{
           display: 'flex',
@@ -24,6 +31,15 @@ const Game: FC = () => {
 
           position: 'relative'
         }}
+        onPointerUp={
+          (
+            state.matches('play.chaining')
+              ? () => {
+                  actor.send('QUIT_CHAINING')
+                }
+              : undefined
+          )
+        }
       >
         {
           state.context.board.map((row, rowIndex) => (
@@ -39,6 +55,7 @@ const Game: FC = () => {
                 row.map((data, colIndex) => (
                   <Tile
                     key={colIndex}
+                    location={[colIndex, rowIndex]}
                     {...data}
                   />
                 ))
@@ -54,7 +71,11 @@ const Game: FC = () => {
               Play
             </button>
             )
-          : null
+          : (
+            <span>
+              SCORE: {state.context.totalScore}
+            </span>
+            )
       }
     </main>
   )

@@ -1,8 +1,13 @@
 import { createContext } from 'react'
-import { createMachine, assign, actions, ActorRefFrom } from 'xstate'
+import { createMachine, assign, ActorRefFrom } from 'xstate'
 
 import { generateTitleBoard, generateRandomBoard } from '@/utils/board'
 import { GameData } from '@/types'
+
+const addLetterActions = [
+  'addLetter',
+  'updateCurrentWord'
+]
 
 export const gameStateMachine = createMachine(
   {
@@ -16,18 +21,46 @@ export const gameStateMachine = createMachine(
       },
       play: {
         entry: 'setupGame',
-        on: {
-          ADD_LETTER: {
-            actions: [
-              actions.log(() => 'ADD_LETTER RECEIVED'),
-              'addLetter'
-            ]
+        initial: 'idle',
+        states: {
+          idle: {
+            entry: 'cleanupChain',
+            on: {
+              ADD_LETTER: {
+                target: 'chaining',
+                actions: addLetterActions
+              }
+            }
+          },
+          chaining: {
+            on: {
+              ADD_LETTER: {
+                actions: addLetterActions
+              },
+              REMOVE_LETTER: {
+                actions: [
+                  'removeLetter',
+                  'updateCurrentWord'
+                ]
+              },
+              QUIT_CHAINING: [
+                { target: 'score', cond: 'chainMeetsMinimumLength' },
+                { target: 'idle' }
+              ]
+            }
+          },
+          score: {
+            always: 'idle',
+            exit: 'updateTotalScore'
           }
         }
       }
     },
     context: {
+      currentChain: [],
       currentWord: '',
+      currentScore: 0,
+      totalScore: 0,
       board: []
     },
     /* eslint-disable @typescript-eslint/consistent-type-assertions */
@@ -35,7 +68,9 @@ export const gameStateMachine = createMachine(
       context: {} as GameData,
       events: {} as
         | { type: 'START_GAME' }
-        | { type: 'ADD_LETTER', letter: string }
+        | { type: 'ADD_LETTER', location: [number, number] }
+        | { type: 'REMOVE_LETTER' }
+        | { type: 'QUIT_CHAINING' }
     }
     /* eslint-enable @typescript-eslint/consistent-type-assertions */
   },
@@ -49,9 +84,34 @@ export const gameStateMachine = createMachine(
         board: (_) => generateRandomBoard()
       }),
       addLetter: assign({
-        currentWord: (context, event: { type: 'ADD_LETTER', letter: string }) =>
-          context.currentWord + event.letter
+        currentChain: (context, { location }: { type: 'ADD_LETTER', location: [number, number] }) =>
+          context.currentChain.concat([location])
+      }),
+      removeLetter: assign({
+        currentChain: (context) =>
+          context.currentChain.slice(0, -1)
+      }),
+      updateCurrentWord: assign({
+        currentWord: (context) => context.currentChain.reduce(
+          (word, [col, row]) => word + context.board[row][col].letter,
+          ''
+        ),
+        currentScore: (context) => context.currentChain.reduce(
+          (score, [col, row]) => score + context.board[row][col].score,
+          0
+        )
+      }),
+      updateTotalScore: assign({
+        totalScore: (context) => context.totalScore + context.currentScore
+      }),
+      cleanupChain: assign({
+        currentChain: [],
+        currentWord: '',
+        currentScore: 0
       })
+    },
+    guards: {
+      chainMeetsMinimumLength: (context) => context.currentChain.length > 1
     }
   }
 )
