@@ -1,4 +1,4 @@
-import { FC, useContext } from 'react'
+import { FC, useContext, useState, useEffect } from 'react'
 import { useSelector } from '@xstate/react'
 
 import { TileData } from '@/types'
@@ -13,20 +13,30 @@ const Tile: FC<TypeProps> = ({ letter, score }) => {
   const actor = useContext(GameStateMachineContext)
   const isChaining = useSelector(actor, (state) => state.matches('play.chaining'))
 
+  const [isSelected, setSelected] = useState(false)
+
+  useEffect(() => {
+    if (!isChaining) {
+      setSelected(false)
+    }
+  }, [isChaining])
+
   return (
     <div
-      className={style.tile}
+      className={isSelected ? style.tileSelected : style.tile}
       {
         ...(
           !isChaining
             ? {
                 onPointerDown: () => {
                   actor.send({ type: 'ADD_LETTER', letter })
+                  setSelected(true)
                 }
               }
             : {
                 onPointerEnter: () => {
                   actor.send({ type: 'ADD_LETTER', letter })
+                  setSelected(true)
                 }
               }
         )

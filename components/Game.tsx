@@ -30,7 +30,8 @@ const Game: FC = () => {
               ? () => {
                   actor.send('QUIT_CHAINING')
                 }
-              : undefined)
+              : undefined
+          )
         }
       >
         {
