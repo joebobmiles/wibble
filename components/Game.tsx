@@ -24,6 +24,14 @@ const Game: FC = () => {
 
           position: 'relative'
         }}
+        onPointerUp={
+          (
+            state.matches('play.chaining')
+              ? () => {
+                  actor.send('QUIT_CHAINING')
+                }
+              : undefined)
+        }
       >
         {
           state.context.board.map((row, rowIndex) => (

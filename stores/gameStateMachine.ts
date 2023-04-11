@@ -1,5 +1,5 @@
 import { createContext } from 'react'
-import { createMachine, assign, actions, ActorRefFrom } from 'xstate'
+import { createMachine, assign, ActorRefFrom } from 'xstate'
 
 import { generateTitleBoard, generateRandomBoard } from '@/utils/board'
 import { GameData } from '@/types'
@@ -18,10 +18,20 @@ export const gameStateMachine = createMachine(
         entry: 'setupGame',
         on: {
           ADD_LETTER: {
-            actions: [
-              actions.log(() => 'ADD_LETTER RECEIVED'),
-              'addLetter'
-            ]
+            actions: 'addLetter'
+          }
+        },
+        initial: 'idle',
+        states: {
+          idle: {
+            on: {
+              ADD_LETTER: 'chaining'
+            }
+          },
+          chaining: {
+            on: {
+              QUIT_CHAINING: 'idle'
+            }
           }
         }
       }
@@ -36,6 +46,7 @@ export const gameStateMachine = createMachine(
       events: {} as
         | { type: 'START_GAME' }
         | { type: 'ADD_LETTER', letter: string }
+        | { type: 'QUIT_CHAINING' }
     }
     /* eslint-enable @typescript-eslint/consistent-type-assertions */
   },
