@@ -1,4 +1,4 @@
-import { FC, useContext, useState, useEffect } from 'react'
+import { FC, useContext, useState, useEffect, useCallback } from 'react'
 import { useSelector } from '@xstate/react'
 
 import { TileData } from '@/types'
@@ -22,24 +22,19 @@ const Tile: FC<TypeProps> = ({ letter, score, location }) => {
     }
   }, [isChaining])
 
+  const addLetter = useCallback(() => {
+    actor.send({ type: 'ADD_LETTER', location })
+    setSelected(true)
+  }, [actor, location])
+
   return (
     <div
       className={isSelected ? style.tileSelected : style.tile}
       {
         ...(
           !isChaining
-            ? {
-                onPointerDown: () => {
-                  actor.send({ type: 'ADD_LETTER', location })
-                  setSelected(true)
-                }
-              }
-            : {
-                onPointerEnter: () => {
-                  actor.send({ type: 'ADD_LETTER', location })
-                  setSelected(true)
-                }
-              }
+            ? { onPointerDown: addLetter }
+            : { onPointerEnter: addLetter }
         )
       }
     >
