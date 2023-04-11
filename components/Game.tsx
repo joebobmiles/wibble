@@ -55,6 +55,7 @@ const Game: FC = () => {
                 row.map((data, colIndex) => (
                   <Tile
                     key={colIndex}
+                    location={[colIndex, rowIndex]}
                     {...data}
                   />
                 ))

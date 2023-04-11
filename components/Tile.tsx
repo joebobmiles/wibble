@@ -7,9 +7,10 @@ import { GameStateMachineContext } from '@/stores/gameStateMachine'
 import style from './Tile.module.scss'
 
 interface TypeProps extends TileData {
+  location: [number, number]
 }
 
-const Tile: FC<TypeProps> = ({ letter, score }) => {
+const Tile: FC<TypeProps> = ({ letter, score, location }) => {
   const actor = useContext(GameStateMachineContext)
   const isChaining = useSelector(actor, (state) => state.matches('play.chaining'))
 
@@ -29,13 +30,13 @@ const Tile: FC<TypeProps> = ({ letter, score }) => {
           !isChaining
             ? {
                 onPointerDown: () => {
-                  actor.send({ type: 'ADD_LETTER', letter, score })
+                  actor.send({ type: 'ADD_LETTER', location })
                   setSelected(true)
                 }
               }
             : {
                 onPointerEnter: () => {
-                  actor.send({ type: 'ADD_LETTER', letter, score })
+                  actor.send({ type: 'ADD_LETTER', location })
                   setSelected(true)
                 }
               }

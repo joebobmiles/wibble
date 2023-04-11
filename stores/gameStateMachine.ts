@@ -41,6 +41,7 @@ export const gameStateMachine = createMachine(
       }
     },
     context: {
+      currentChain: [],
       currentWord: '',
       currentScore: 0,
       totalScore: 0,
@@ -51,7 +52,7 @@ export const gameStateMachine = createMachine(
       context: {} as GameData,
       events: {} as
         | { type: 'START_GAME' }
-        | { type: 'ADD_LETTER', letter: string, score: number }
+        | { type: 'ADD_LETTER', location: [number, number] }
         | { type: 'QUIT_CHAINING' }
     }
     /* eslint-enable @typescript-eslint/consistent-type-assertions */
@@ -66,12 +67,15 @@ export const gameStateMachine = createMachine(
         board: (_) => generateRandomBoard()
       }),
       addLetter: assign({
-        currentWord: (context, event: { type: 'ADD_LETTER', letter: string, score: number }) =>
-          context.currentWord + event.letter,
-        currentScore: (context, event: { type: 'ADD_LETTER', letter: string, score: number }) =>
-          context.currentScore + event.score
+        currentChain: (context, { location }: { type: 'ADD_LETTER', location: [number, number] }) =>
+          context.currentChain.concat([location]),
+        currentWord: (context, { location: [col, row] }: { type: 'ADD_LETTER', location: [number, number] }) =>
+          context.currentWord + context.board[row][col].letter,
+        currentScore: (context, { location: [col, row] }: { type: 'ADD_LETTER', location: [number, number] }) =>
+          context.currentScore + context.board[row][col].score
       }),
       chainingCleanup: assign({
+        currentChain: [],
         currentWord: '',
         currentScore: 0,
         totalScore: (context) => context.totalScore + context.currentScore
