@@ -25,7 +25,10 @@ export const gameStateMachine = createMachine(
         states: {
           idle: {
             on: {
-              ADD_LETTER: 'chaining'
+              ADD_LETTER: {
+                target: 'chaining',
+                actions: 'addLetter'
+              }
             }
           },
           chaining: {
