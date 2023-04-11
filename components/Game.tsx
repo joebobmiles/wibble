@@ -73,7 +73,7 @@ const Game: FC = () => {
             )
           : (
             <span>
-              {state.context.totalScore}
+              SCORE: {state.context.totalScore}
             </span>
             )
       }
