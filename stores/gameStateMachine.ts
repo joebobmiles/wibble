@@ -1,7 +1,7 @@
 import { createContext } from 'react'
 import { createMachine, assign, ActorRefFrom } from 'xstate'
 
-import { generateTitleBoard, generateRandomBoard } from '@/utils/board'
+import { generateTitleBoard, generateRandomBoard, randomLetter } from '@/utils/board'
 import { GameData } from '@/types'
 
 const addLetterActions = [
@@ -24,7 +24,7 @@ export const gameStateMachine = createMachine(
         initial: 'idle',
         states: {
           idle: {
-            entry: 'cleanupChain',
+            entry: 'clearCurrentWord',
             on: {
               ADD_LETTER: {
                 target: 'chaining',
@@ -44,14 +44,19 @@ export const gameStateMachine = createMachine(
                 ]
               },
               STOP_CHAINING: [
-                { target: 'score', cond: 'chainMeetsMinimumLength' },
+                { target: 'cleanup', cond: 'chainMeetsMinimumLength' },
                 { target: 'idle' }
               ]
             }
           },
-          score: {
-            always: 'idle',
-            exit: 'updateTotalScore'
+          cleanup: {
+            always: {
+              target: 'idle',
+              actions: [
+                'updateTotalScore',
+                'replaceUsedLetters'
+              ]
+            }
           }
         }
       }
@@ -104,7 +109,18 @@ export const gameStateMachine = createMachine(
       updateTotalScore: assign({
         totalScore: (context) => context.totalScore + context.currentScore
       }),
-      cleanupChain: assign({
+      replaceUsedLetters: assign({
+        board: (context) => {
+          const board = context.board
+
+          for (const [col, row] of context.currentChain) {
+            board[row][col] = randomLetter()
+          }
+
+          return board
+        }
+      }),
+      clearCurrentWord: assign({
         currentChain: [],
         currentWord: '',
         currentScore: 0
