@@ -43,7 +43,7 @@ export const gameStateMachine = createMachine(
                   'updateCurrentWord'
                 ]
               },
-              QUIT_CHAINING: [
+              STOP_CHAINING: [
                 { target: 'score', cond: 'chainMeetsMinimumLength' },
                 { target: 'idle' }
               ]
@@ -70,7 +70,7 @@ export const gameStateMachine = createMachine(
         | { type: 'START_GAME' }
         | { type: 'ADD_LETTER', location: [number, number] }
         | { type: 'REMOVE_LETTER' }
-        | { type: 'QUIT_CHAINING' }
+        | { type: 'STOP_CHAINING' }
     }
     /* eslint-enable @typescript-eslint/consistent-type-assertions */
   },

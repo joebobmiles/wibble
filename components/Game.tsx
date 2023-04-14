@@ -35,7 +35,7 @@ const Game: FC = () => {
           (
             state.matches('play.chaining')
               ? () => {
-                  actor.send('QUIT_CHAINING')
+                  actor.send('STOP_CHAINING')
                 }
               : undefined
           )
