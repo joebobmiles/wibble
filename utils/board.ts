@@ -1,6 +1,6 @@
 import { TileData } from '../types'
 
-export const tiles = [
+export const tiles: TileData[] = [
   { letter: 'A', score: 1 },
   { letter: 'B', score: 3 },
   { letter: 'C', score: 3 },
@@ -29,8 +29,67 @@ export const tiles = [
   { letter: 'Z', score: 10 }
 ]
 
-export const randomLetter = (): TileData =>
-  tiles[Math.floor((Math.random() * (tiles.length - 1)))]
+const tileCDF: Record<string, [number, number]> = {
+  Z: [0, 0.00074],
+  Q: [0.00074, 0.00169],
+  J: [0.00169, 0.00319],
+  X: [0.00319, 0.00469],
+  K: [0.00469, 0.01239],
+  V: [0.01239, 0.02219],
+  B: [0.02219, 0.03719],
+  P: [0.03719, 0.05619],
+  G: [0.05619, 0.07619],
+  Y: [0.07619, 0.09619],
+  F: [0.09619, 0.11819],
+  M: [0.11819, 0.14219],
+  W: [0.14219, 0.16619],
+  C: [0.16619, 0.19419],
+  U: [0.19419, 0.22219],
+  L: [0.22219, 0.26219],
+  D: [0.26219, 0.30519],
+  R: [0.30519, 0.36519],
+  H: [0.36519, 0.42619],
+  S: [0.42619, 0.48919],
+  N: [0.48919, 0.55619],
+  I: [0.55619, 0.62619],
+  O: [0.62619, 0.70119],
+  A: [0.70119, 0.78319],
+  T: [0.78319, 0.87419],
+  E: [0.87419, 1]
+}
+
+export const getLetterByProbability = (value: number): TileData => {
+  const search = (
+    randomValue: number,
+    intervals: Array<[number, number]>,
+    indexOffset: number = 0
+  ): string | undefined => {
+    console.log(indexOffset)
+
+    const index = Math.floor(intervals.length / 2)
+    const [lowerBound, upperBound] = intervals[Math.floor(intervals.length / 2)]
+
+    if (lowerBound < randomValue && randomValue <= upperBound) {
+      return Object.keys(tileCDF)[index + indexOffset]
+    } else if (lowerBound === randomValue) {
+      return Object.keys(tileCDF)[
+        (index + indexOffset) === 0
+          ? 0
+          : (index + indexOffset) - 1
+      ]
+    } else if (randomValue < lowerBound) {
+      return search(randomValue, intervals.slice(0, index), indexOffset)
+    } else if (upperBound < randomValue) {
+      return search(randomValue, intervals.slice(index), indexOffset + index)
+    }
+  }
+
+  const l = search(value, Object.values(tileCDF))
+
+  return tiles.find(({ letter }) => letter === l) as TileData
+}
+
+export const randomLetter = (): TileData => getLetterByProbability(Math.random())
 
 export const generateRandomBoard = (): TileData[][] => {
   const board = [] as TileData[][]
