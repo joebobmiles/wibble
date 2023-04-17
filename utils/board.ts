@@ -67,7 +67,7 @@ export const getLetterByProbability = (value: number): TileData => {
     console.log(indexOffset)
 
     const index = Math.floor(intervals.length / 2)
-    const [lowerBound, upperBound] = intervals[Math.floor(intervals.length / 2)]
+    const [lowerBound, upperBound] = intervals[index]
 
     if (lowerBound < randomValue && randomValue <= upperBound) {
       return Object.keys(tileCDF)[index + indexOffset]
