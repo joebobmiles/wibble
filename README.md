@@ -20,6 +20,7 @@ Wibble is live and [hosted on Vercel](https://wibble.vercel.app).
 | 2 | [Wibble: Day 2](https://jrm.dev/posts/wibble-day-2) | [wibble-day-2.vercel.app](https://wibble-day-1.vercel.app) |
 | 3 | [Wibble: Day 3](https://jrm.dev/posts/wibble-day-3) | [wibble-day-3.vercel.app](https://wibble-day-1.vercel.app) |
 | 4 | [Wibble: Day 4](https://jrm.dev/posts/wibble-day-4) | [wibble-day-4.vercel.app](https://wibble-day-1.vercel.app) |
+| 5 | [Wibble: Day 5](https://jrm.dev/posts/wibble-day-5) | [Figma](https://www.figma.com/file/yhgMix4JiP3y6evGrsvtjP/Wibble-Day-5?node-id=40%3A275&t=wRd6yQG6gNTw9UEE-1) |
 
 ---
 
