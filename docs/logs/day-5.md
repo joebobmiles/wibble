@@ -1,0 +1,3 @@
+- Goal for today: Make the game pretty!
+- Already have an iteration that I like, but I need to refine it more.
+  - Colors are off...
