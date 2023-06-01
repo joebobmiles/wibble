@@ -15,3 +15,5 @@
         - What if we wanted to transition _back_ to the title screen from the
           game? We'd have to implement a whole new system to manage that
           transition, which we could have just done using XState.
+  - Now that we have two views, we need to start implementing the styles
+    - 

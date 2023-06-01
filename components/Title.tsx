@@ -3,13 +3,11 @@ import { FC, useContext } from 'react'
 import Tile from '@/components/Tile'
 import { WibbleStateMachineContext } from '@/stores/wibbleStateMachine'
 
-import styles from './Game.module.scss'
-
 const Title: FC = () => {
   const actor = useContext(WibbleStateMachineContext)
 
   return (
-    <main className={styles.container}>
+    <>
       <div
         style={{
           display: 'flex',
@@ -39,7 +37,7 @@ const Title: FC = () => {
       <button onClick={() => actor.send('START_GAME')}>
         Play
       </button>
-    </main>
+    </>
   )
 }
 

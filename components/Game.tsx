@@ -5,14 +5,12 @@ import { useActor } from '@xstate/react'
 import Tile from '@/components/Tile'
 import { WibbleStateMachineContext } from '@/stores/wibbleStateMachine'
 
-import styles from './Game.module.scss'
-
 const Game: FC = () => {
   const actor = useContext(WibbleStateMachineContext)
   const [state] = useActor(actor)
 
   return (
-    <main className={styles.container}>
+    <>
       <div>
         {state.context.currentWord}
         {
@@ -67,7 +65,7 @@ const Game: FC = () => {
       <span>
         SCORE: {state.context.totalScore}
       </span>
-    </main>
+    </>
   )
 }
 
