@@ -2,7 +2,7 @@ import { FC, useContext, useCallback } from 'react'
 import { useSelector } from '@xstate/react'
 
 import { TileData } from '@/types'
-import { GameStateMachineContext } from '@/stores/gameStateMachine'
+import { WibbleStateMachineContext } from '@/stores/wibbleStateMachine'
 
 import style from './Tile.module.scss'
 
@@ -11,7 +11,7 @@ interface TypeProps extends TileData {
 }
 
 const Tile: FC<TypeProps> = ({ letter, score, location }) => {
-  const actor = useContext(GameStateMachineContext)
+  const actor = useContext(WibbleStateMachineContext)
   const {
     isChaining,
     tailOfChain,

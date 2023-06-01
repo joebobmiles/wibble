@@ -3,12 +3,12 @@ import { FC, useContext } from 'react'
 import { useActor } from '@xstate/react'
 
 import Tile from '@/components/Tile'
-import { GameStateMachineContext } from '@/stores/gameStateMachine'
+import { WibbleStateMachineContext } from '@/stores/wibbleStateMachine'
 
 import styles from './Game.module.scss'
 
 const Game: FC = () => {
-  const actor = useContext(GameStateMachineContext)
+  const actor = useContext(WibbleStateMachineContext)
   const [state] = useActor(actor)
 
   return (
@@ -64,19 +64,9 @@ const Game: FC = () => {
           ))
         }
       </div>
-      {
-        state.matches('title')
-          ? (
-            <button onClick={() => actor.send('START_GAME')}>
-              Play
-            </button>
-            )
-          : (
-            <span>
-              SCORE: {state.context.totalScore}
-            </span>
-            )
-      }
+      <span>
+        SCORE: {state.context.totalScore}
+      </span>
     </main>
   )
 }

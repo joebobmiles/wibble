@@ -1,7 +1,7 @@
 import { createContext } from 'react'
 import { createMachine, assign, ActorRefFrom } from 'xstate'
 
-import { generateTitleBoard, generateRandomBoard, randomLetter } from '@/utils/board'
+import { generateRandomBoard, randomLetter } from '@/utils/board'
 import { GameData } from '@/types'
 
 const addLetterActions = [
@@ -9,12 +9,11 @@ const addLetterActions = [
   'updateCurrentWord'
 ]
 
-export const gameStateMachine = createMachine(
+export const wibbleStateMachine = createMachine(
   {
     initial: 'title',
     states: {
       title: {
-        entry: 'setupTitle',
         on: {
           START_GAME: 'play'
         }
@@ -81,10 +80,6 @@ export const gameStateMachine = createMachine(
   },
   {
     actions: {
-      setupTitle: assign({
-        currentWord: (_) => '',
-        board: (_) => generateTitleBoard()
-      }),
       setupGame: assign({
         board: (_) => generateRandomBoard()
       }),
@@ -132,8 +127,8 @@ export const gameStateMachine = createMachine(
   }
 )
 
-export const GameStateMachineContext =
-  createContext<ActorRefFrom<typeof gameStateMachine>>(
+export const WibbleStateMachineContext =
+  createContext<ActorRefFrom<typeof wibbleStateMachine>>(
     // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-    {} as ActorRefFrom<typeof gameStateMachine>
+    {} as ActorRefFrom<typeof wibbleStateMachine>
   )

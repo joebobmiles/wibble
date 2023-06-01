@@ -104,19 +104,3 @@ export const generateRandomBoard = (): TileData[][] => {
 
   return board
 }
-
-export const generateTitleBoard = (): TileData[][] => {
-  const board = [] as TileData[][]
-
-  for (let r = 0; r < 5; r++) {
-    board[r] = [
-      tiles[22], // W
-      tiles[8], // I
-      tiles[1], // B
-      tiles[11], // L
-      tiles[4] // E
-    ] as TileData[]
-  }
-
-  return board
-}
