@@ -12,9 +12,10 @@ const Title: FC = () => {
         style={{
           display: 'flex',
           flexDirection: 'column',
-          gap: '16px',
-          border: '1px solid black',
-          padding: '16px',
+          gap: '32px',
+          padding: '32px',
+          background: '#FFE8AE',
+          borderRadius: '32px',
 
           position: 'relative'
         }}
@@ -23,7 +24,7 @@ const Title: FC = () => {
           style={{
             display: 'flex',
             flexDirection: 'row',
-            gap: '16px'
+            gap: '32px'
           }}
         >
           <Tile letter='W' score={4} location={[0, 0]} />

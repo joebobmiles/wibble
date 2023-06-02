@@ -1,0 +1,3 @@
+- Onwards and upwards, we continue with the new styles
+  - Specifically the tiles, since they are the most complicated of the lot.
+  - Installed and learning Storybook to make developing the Tile component easier.
