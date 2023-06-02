@@ -161,7 +161,6 @@ const NewTile: FC<TileProps> = ({ letter, score, location }) => {
                 131.25, 150 75, 150
                 0, 131.25 0, 75
             '
-            fill='#FFBA08'
           />
         </svg>
         <svg
@@ -169,7 +168,7 @@ const NewTile: FC<TileProps> = ({ letter, score, location }) => {
           viewBox='0 0 32 32'
           xmlns='http://www.w3.org/2000/svg'
         >
-          <circle cx='16' cy='16' r='16' fill='#FFBA08' />
+          <circle cx='16' cy='16' r='16' />
         </svg>
       </div>
     </div>

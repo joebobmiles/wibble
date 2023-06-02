@@ -7,14 +7,7 @@ import Tile from './Tile'
 
 const meta: Meta<typeof Tile> = {
   title: 'Tile',
-  component: Tile
-}
-
-export default meta
-type Story = StoryObj<typeof Tile>
-
-export const Default: Story = {
-  render: () => <Tile letter='A' score={1} location={[0, 0]} />,
+  component: Tile,
   decorators: [
     (Story) => {
       const actor = useInterpret(wibbleStateMachine)
@@ -26,4 +19,11 @@ export const Default: Story = {
       )
     }
   ]
+}
+
+export default meta
+type Story = StoryObj<typeof Tile>
+
+export const Default: Story = {
+  render: () => <Tile letter='A' score={1} location={[0, 0]} />
 }
