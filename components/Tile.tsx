@@ -103,83 +103,77 @@ const Tile: FC<TileProps> = ({ letter, score, location }) => {
   )
 }
 
-const NewTile: FC<TileProps> = ({ letter, score }) => (
-  <div
-    style={{
-      position: 'relative',
-      width: '64px',
-      height: '64px'
-    }}
-  >
+const NewTile: FC<TileProps> = ({ letter, score, location }) => {
+  const actor = useContext(WibbleStateMachineContext)
+  const {
+    isChaining,
+    tailOfChain,
+    isSelected
+  } = useSelector(actor, (state) => ({
+    isChaining: state.matches('play.chaining'),
+    tailOfChain: state.context.currentChain.slice(-2),
+    isSelected: state.context.currentChain.find((l) => l.toString() === location.toString())
+  }))
+
+  const addLetter = useCallback(() => {
+    actor.send({ type: 'ADD_LETTER', location })
+  }, [actor, location])
+
+  const removeLetter = useCallback(() => {
+    if (tailOfChain[0].toString() === location.toString()) {
+      actor.send('REMOVE_LETTER')
+    }
+  }, [actor, location, tailOfChain])
+
+  return (
     <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: 0,
-        gap: '10px',
-        isolation: 'isolate',
+      className={style.tile}
 
-        position: 'absolute',
-        width: '64px',
-        height: '64px',
-        left: 0,
-        top: 0
-      }}
+      {
+        ...(
+          !isChaining
+            ? { onPointerDown: addLetter }
+            : (
+                { onPointerEnter: ((isSelected != null) ? removeLetter : addLetter) }
+              )
+        )
+      }
     >
-      {letter}
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-          padding: 0,
-
-          position: 'absolute',
-          width: '20px',
-          height: '20px',
-          right: 0,
-          bottom: 0
-        }}
-      >
-        <p
-          style={{
-            width: '5px',
-            height: '8px',
-            zIndex: 1
-          }}
+      <div className={style.tileTextContainer}>
+        {letter}
+        <div className={style.tileScoreContainer}>
+          <p>
+            {score}
+          </p>
+        </div>
+      </div>
+      <div className={style.tileShapeContainer}>
+        <svg
+          className={style.squircle}
+          viewBox='0 0 150 150'
+          xmlns='http://www.w3.org/2000/svg'
         >
-          {score}
-        </p>
+          <path
+            d='
+              M 0, 75
+              C 0, 18.75 18.75, 0 75, 0
+              S 150, 18.75 150, 75
+                131.25, 150 75, 150
+                0, 131.25 0, 75
+            '
+            fill='#FFBA08'
+          />
+        </svg>
+        <svg
+          className={style.ellipse}
+          viewBox='0 0 32 32'
+          xmlns='http://www.w3.org/2000/svg'
+        >
+          <circle cx='16' cy='16' r='16' fill='#FFBA08' />
+        </svg>
       </div>
     </div>
-    <div>
-      <svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'>
-        <path
-          d='
-            M 0, 75
-            C 0, 18.75 18.75, 0 75, 0
-            S 150, 18.75 150, 75
-              131.25, 150 75, 150
-              0, 131.25 0, 75
-          '
-          fill='#FFBA08'
-          transform='
-            rotate(
-              0,
-              100,
-              100
-            )
-            translate(
-                25
-                25
-            )'
-        />
-      </svg>
-    </div>
-  </div>
-)
+  )
+}
 
 export default NewTile
