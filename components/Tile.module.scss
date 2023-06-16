@@ -1,84 +1,101 @@
 @import 'vars';
 
-.tile {
+
+@mixin tile($width, $letter-font-size, $score-font-size, $background, $foreground) {
   position: relative;
-  width: 64px;
-  height: 64px;
+  aspect-ratio: 1/1;
+  width: $width;
 
   font-family: Lilita One, Impact, display;
   font-style: normal;
   font-weight: 400;
-  font-size: 40px;
-  line-height: 46px;
+  font-size: $letter-font-size;
+  line-height: 1;
 
   user-select: none;
   cursor: pointer;
 
-  color: $wibble-primary;
-  fill: $wibble-white;
-}
+  color: $foreground;
+  fill: $background;
 
-.tileTextContainer {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 0;
-  gap: 10px;
-  isolation: isolate;
+  .tileTextContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    isolation: isolate;
 
-  position: absolute;
-  width: 64px;
-  height: 64px;
-  left: 0;
-  top: 0;
-  z-index: 1;
-}
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    z-index: 1;
+  }
 
-.tileScoreContainer {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 0;
+  .tileScoreContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
 
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  right: 0;
-  bottom: 0;
+    position: absolute;
+    width: 31.25%; // calc((20px / 64px) * 100%);
+    height: 31.25%; // calc((20px / 64px) * 100%);
+    right: 0;
+    bottom: 0;
 
-  font-size: 12px;
-  line-height: 14px;
+    font-size: $score-font-size;
+    line-height: 1;
+  }
 
-  p {
-    width: 5px;
-    height: 8px;
+  .tileShapeContainer {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    z-index: 0;
+
+    .squircle {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+    }
+
+    .ellipse {
+      position: absolute;
+      top: 68.75%;
+      left: 68.75%;
+      height: 31.25%;
+      width: 31.25%;
+      padding: 0;
+    }
   }
 }
 
-.tileShapeContainer {
-  position: absolute;
-  width: 64px;
-  height: 64px;
-  left: 0;
-  top: 0;
-  z-index: 0;
+.tile {
+  @include tile(
+    $width: 64px,
+    $letter-font-size: 40px,
+    $score-font-size: 12px,
+    $background: $wibble-white,
+    $foreground: $wibble-primary
+  );
 }
 
-.squircle {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-}
+.titleTile {
+  @include tile(
+    $width: 128px,
+    $letter-font-size: 80px,
+    $score-font-size: 24px,
+    $background: $wibble-primary,
+    $foreground: $wibble-white
+  );
 
-.ellipse {
-  position: absolute;
-  top: 44px;
-  left: 44px;
-  height: 20px;
-  width: 20px;
-  padding: 0;
+  cursor: default;
 }

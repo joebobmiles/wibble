@@ -27,3 +27,7 @@ type Story = StoryObj<typeof Tile>
 export const Default: Story = {
   render: () => <Tile letter='A' score={1} location={[0, 0]} />
 }
+
+export const Title: Story = {
+  render: () => <Tile letter='A' score={1} location={[0, 0]} title />
+}

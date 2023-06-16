@@ -8,9 +8,10 @@ import style from './Tile.module.scss'
 
 interface TileProps extends TileData {
   location: [number, number]
+  title?: boolean
 }
 
-const Tile: FC<TileProps> = ({ letter, score, location }) => {
+const Tile: FC<TileProps> = ({ letter, score, location, title }) => {
   const actor = useContext(WibbleStateMachineContext)
   const {
     isChaining,
@@ -34,7 +35,7 @@ const Tile: FC<TileProps> = ({ letter, score, location }) => {
 
   return (
     <div
-      className={style.tile}
+      className={title ? style.titleTile : style.tile}
       {
         ...(
           !isChaining
