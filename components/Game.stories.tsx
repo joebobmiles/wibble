@@ -1,4 +1,4 @@
-
+import { useEffect } from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 
 import { useInterpret } from '@xstate/react'
@@ -12,6 +12,10 @@ const meta: Meta<typeof Game> = {
   decorators: [
     (Story) => {
       const actor = useInterpret(wibbleStateMachine)
+
+      useEffect(() => {
+        actor.send('START_GAME')
+      }, [])
 
       return (
         <WibbleStateMachineContext.Provider value={actor}>
