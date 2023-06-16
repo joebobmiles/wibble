@@ -1,0 +1,58 @@
+@import 'vars';
+
+.container {
+  width: 100vw;
+  height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0px;
+  gap: 64px; 
+}
+
+.titleGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  padding: 32px;
+  background: $wibble-secondary;
+  border-radius: 32px;
+
+  position: relative;
+
+  .titleRow {
+    display: flex;
+    flex-direction: row;
+    gap: 32px;
+  }
+}
+
+.playButton {
+  // Reset
+  border: none;
+
+  // Actual styles
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 16px 64px;
+
+  width: 250px;
+  height: 96px;
+
+  background: $wibble-primary;
+  border-radius: 64px;
+
+  // Text
+  font-family: 'Lilita One';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 64px;
+  line-height: 64px;
+
+  color: $wibble-white;
+
+  cursor: pointer;
+}

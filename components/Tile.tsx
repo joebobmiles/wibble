@@ -34,101 +34,7 @@ const Tile: FC<TileProps> = ({ letter, score, location }) => {
 
   return (
     <div
-      className={(isSelected != null) ? style.tileSelected : style.tile}
-      {
-        ...(
-          !isChaining
-            ? { onPointerDown: addLetter }
-            : (
-                { onPointerEnter: ((isSelected != null) ? removeLetter : addLetter) }
-              )
-        )
-      }
-    >
-      <div
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%'
-        }}
-      >
-        <svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'>
-          <path
-            d='
-              M 0, 75
-              C 0, 18.75 18.75, 0 75, 0
-              S 150, 18.75 150, 75
-                131.25, 150 75, 150
-                0, 131.25 0, 75
-            '
-            fill='#FFBA08'
-            transform='
-              rotate(
-                0,
-                100,
-                100
-              )
-              translate(
-                  25
-                  25
-              )'
-          />
-        </svg>
-        <svg
-          viewBox='0 0 32 32'
-          xmlns='http://www.w3.org/2000/svg'
-          style={{
-            position: 'absolute',
-            top: '68.75%',
-            left: '68.75%',
-            bottom: 0,
-            right: 0,
-            height: '40px',
-            width: '40px',
-            padding: 0
-          }}
-        >
-          <circle cx='16' cy='16' r='16' fill='#FFBA08' />
-        </svg>
-      </div>
-
-      {letter}
-
-      <div className={style.tileScore}>
-        {score}
-      </div>
-    </div>
-  )
-}
-
-const NewTile: FC<TileProps> = ({ letter, score, location }) => {
-  const actor = useContext(WibbleStateMachineContext)
-  const {
-    isChaining,
-    tailOfChain,
-    isSelected
-  } = useSelector(actor, (state) => ({
-    isChaining: state.matches('play.chaining'),
-    tailOfChain: state.context.currentChain.slice(-2),
-    isSelected: state.context.currentChain.find((l) => l.toString() === location.toString())
-  }))
-
-  const addLetter = useCallback(() => {
-    actor.send({ type: 'ADD_LETTER', location })
-  }, [actor, location])
-
-  const removeLetter = useCallback(() => {
-    if (tailOfChain[0].toString() === location.toString()) {
-      actor.send('REMOVE_LETTER')
-    }
-  }, [actor, location, tailOfChain])
-
-  return (
-    <div
       className={style.tile}
-
       {
         ...(
           !isChaining
@@ -175,4 +81,4 @@ const NewTile: FC<TileProps> = ({ letter, score, location }) => {
   )
 }
 
-export default NewTile
+export default Tile
