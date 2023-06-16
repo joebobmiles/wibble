@@ -12,12 +12,12 @@ const Title: FC = () => {
     <main className={styles.container}>
       <div className={styles.titleGrid}>
         <div className={styles.titleRow}>
-          <Tile letter='W' score={4} location={[0, 0]} title />
-          <Tile letter='I' score={1} location={[0, 0]} title />
-          <Tile letter='B' score={3} location={[0, 0]} title />
-          <Tile letter='B' score={3} location={[0, 0]} title />
-          <Tile letter='L' score={1} location={[0, 0]} title />
-          <Tile letter='E' score={1} location={[0, 0]} title />
+          <Tile title letter='W' score={4} location={[0, 0]} />
+          <Tile title letter='I' score={1} location={[0, 0]} />
+          <Tile title letter='B' score={3} location={[0, 0]} />
+          <Tile title letter='B' score={3} location={[0, 0]} />
+          <Tile title letter='L' score={1} location={[0, 0]} />
+          <Tile title letter='E' score={1} location={[0, 0]} />
         </div>
       </div>
       <button
