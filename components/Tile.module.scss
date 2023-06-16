@@ -1,5 +1,4 @@
-$primary: #FFBA08;
-$secondary: white;
+@import 'vars';
 
 .tile {
   position: relative;
@@ -15,8 +14,8 @@ $secondary: white;
   user-select: none;
   cursor: pointer;
 
-  color: $primary;
-  fill: $secondary;
+  color: $wibble-primary;
+  fill: $wibble-white;
 }
 
 .tileTextContainer {
