@@ -22,15 +22,7 @@ const Game: FC = () => {
         }
       </div>
       <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '16px',
-          border: '1px solid black',
-          padding: '16px',
-
-          position: 'relative'
-        }}
+        className={styles.board}
         onPointerUp={
           (
             state.matches('play.chaining')
@@ -45,11 +37,7 @@ const Game: FC = () => {
           state.context.board.map((row, rowIndex) => (
             <div
               key={rowIndex}
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                gap: '16px'
-              }}
+              className={styles.boardRow}
             >
               {
                 row.map((data, colIndex) => (
