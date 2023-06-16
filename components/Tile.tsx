@@ -35,7 +35,7 @@ const Tile: FC<TileProps> = ({ letter, score, location, title }) => {
 
   return (
     <div
-      className={title ? style.titleTile : style.tile}
+      className={(title ?? false) ? style.titleTile : style.tile}
       {
         ...(
           !isChaining
