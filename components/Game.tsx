@@ -52,9 +52,14 @@ const Game: FC = () => {
           ))
         }
       </div>
-      <span>
-        SCORE: {state.context.totalScore}
-      </span>
+      <div className={styles.scoreContainer}>
+        <p className={styles.scoreTitle}>
+          SCORE:
+        </p>
+        <p className={styles.scoreValue}>
+          {state.context.totalScore}
+        </p>
+      </div>
     </main>
   )
 }
