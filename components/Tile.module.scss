@@ -87,6 +87,12 @@
   );
 }
 
+.tileSelected {
+  @extend .tile;
+  color: $wibble-white;
+  fill: $wibble-primary;
+}
+
 .titleTile {
   @include tile(
     $width: 128px,

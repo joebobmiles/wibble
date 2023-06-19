@@ -64,8 +64,6 @@ export const getLetterByProbability = (value: number): TileData => {
     intervals: Array<[number, number]>,
     indexOffset: number = 0
   ): string | undefined => {
-    console.log(indexOffset)
-
     const index = Math.floor(intervals.length / 2)
     const [lowerBound, upperBound] = intervals[index]
 

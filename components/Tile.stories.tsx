@@ -18,14 +18,32 @@ const meta: Meta<typeof Tile> = {
         </WibbleStateMachineContext.Provider>
       )
     }
-  ]
+  ],
+  argTypes: {
+    selected: {
+      control: { type: 'boolean' }
+    },
+    location: {
+      table: {
+        disable: true
+      }
+    },
+    title: {
+      table: {
+        disable: true
+      }
+    }
+  }
 }
 
 export default meta
 type Story = StoryObj<typeof Tile>
 
 export const Default: Story = {
-  render: () => <Tile letter='A' score={1} location={[0, 0]} />
+  render: (args) => <Tile letter='A' score={1} location={[0, 0]} selected={args.selected} />,
+  args: {
+    selected: false
+  }
 }
 
 export const Title: Story = {

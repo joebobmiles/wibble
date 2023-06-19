@@ -9,9 +9,10 @@ import style from './Tile.module.scss'
 interface TileProps extends TileData {
   location: [number, number]
   title?: boolean
+  selected?: boolean
 }
 
-const Tile: FC<TileProps> = ({ letter, score, location, title }) => {
+const Tile: FC<TileProps> = ({ letter, score, location, title, selected }) => {
   const actor = useContext(WibbleStateMachineContext)
   const {
     isChaining,
@@ -20,7 +21,7 @@ const Tile: FC<TileProps> = ({ letter, score, location, title }) => {
   } = useSelector(actor, (state) => ({
     isChaining: state.matches('play.chaining'),
     tailOfChain: state.context.currentChain.slice(-2),
-    isSelected: state.context.currentChain.find((l) => l.toString() === location.toString())
+    isSelected: state.context.currentChain.find((l) => l.toString() === location.toString()) !== undefined
   }))
 
   const addLetter = useCallback(() => {
@@ -35,7 +36,15 @@ const Tile: FC<TileProps> = ({ letter, score, location, title }) => {
 
   return (
     <div
-      className={(title ?? false) ? style.titleTile : style.tile}
+      className={
+        (title ?? false)
+          ? style.titleTile
+          : (
+              isSelected || (selected ?? false)
+                ? style.tileSelected
+                : style.tile
+            )
+      }
       {
         ...(
           !isChaining
