@@ -50,7 +50,7 @@ const Tile: FC<TileProps> = ({ letter, score, location, title, selected }) => {
           !isChaining
             ? { onPointerDown: addLetter }
             : (
-                { onPointerEnter: ((isSelected != null) ? removeLetter : addLetter) }
+                { onPointerEnter: isSelected ? removeLetter : addLetter }
               )
         )
       }
