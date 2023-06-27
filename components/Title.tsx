@@ -12,28 +12,24 @@ const Title: FC = () => {
   return (
     <main className={styles.container}>
       <motion.div
-        key='title'
         className={styles.titleGrid}
-        initial={false}
-        animate={{ scale: 1 }}
-        exit={{ scale: 0 }}
+        exit={{ width: 0, height: 0, scale: 0 }}
+        transition={{ type: 'spring', stiffness: 431.9, damping: 24, mass: 1 }}
       >
-        <div className={styles.titleRow}>
+        <motion.div className={styles.titleRow} exit={{ display: 'none' }}>
           <Tile title letter='W' score={4} location={[0, 0]} />
           <Tile title letter='I' score={1} location={[0, 0]} />
           <Tile title letter='B' score={3} location={[0, 0]} />
           <Tile title letter='B' score={3} location={[0, 0]} />
           <Tile title letter='L' score={1} location={[0, 0]} />
           <Tile title letter='E' score={1} location={[0, 0]} />
-        </div>
+        </motion.div>
       </motion.div>
       <motion.button
-        key='button'
         className={styles.playButton}
         onClick={() => actor.send('START_GAME')}
-        initial={false}
-        animate={{ scale: 1 }}
-        exit={{ scale: 0 }}
+        exit={{ translateY: '50vh' }}
+        transition={{ type: 'spring', stiffness: 431.9, damping: 24, mass: 1 }}
       >
         Play
       </motion.button>

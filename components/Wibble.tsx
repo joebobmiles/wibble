@@ -12,7 +12,7 @@ const Wibble: FC = () => {
   const [state] = useActor(actor)
 
   return (
-    <AnimatePresence>
+    <AnimatePresence initial={false}>
       {
         state.matches('title')
           ? <Title key='title' />
