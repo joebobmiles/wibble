@@ -1,5 +1,6 @@
 import { FC, useContext } from 'react'
 import { useActor } from '@xstate/react'
+import { AnimatePresence } from 'framer-motion'
 
 import { WibbleStateMachineContext } from '@/stores/wibbleStateMachine'
 
@@ -11,9 +12,13 @@ const Wibble: FC = () => {
   const [state] = useActor(actor)
 
   return (
-    state.matches('title')
-      ? <Title />
-      : <Game />
+    <AnimatePresence>
+      {
+        state.matches('title')
+          ? <Title key='title' />
+          : <Game key='game' />
+      }
+    </AnimatePresence>
   )
 }
 
